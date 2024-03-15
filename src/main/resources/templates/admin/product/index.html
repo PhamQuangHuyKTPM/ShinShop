@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Startmin - Bootstrap Admin Theme</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link th:href="@{/manager/css/bootstrap.min.css}" rel="stylesheet">
+
+
+    <!-- MetisMenu CSS -->
+    <link th:href="@{/manager/css/metisMenu.min.css}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link th:href="@{/manager/css/startmin.css}" rel="stylesheet">
+
+    <link th:href="@{/admin/form/richeditor/richtext.min.css}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link th:href="@{/manager/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <!-- Navigation -->
+    <nav th:replace="admin/fragments/navbar :: navbar"></nav>
+
+    <aside th:replace="admin/fragments/sidebar :: sidebar"></aside>
+    <!-- /.sidebar -->
+
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Thêm sản phẩm mới</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+
+
+            <!-- /.row -->
+            <div class="row">
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-12">
+                    <div class="panel tabbed-panel panel-info">
+                        <div class="panel-heading clearfix">
+                            <div class="panel-title pull-right"><button type="submit" class="btn btn-primary mt-3" onclick="submitForm()">Thêm mới</button></div>
+                            <div class="pull-left">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#tab-primary-1" data-toggle="tab">Thông tin chung</a></li>
+                                    <li><a href="#tab-primary-2" data-toggle="tab">Mô tả sản phẩm</a></li>
+                                    <li><a href="#tab-primary-3" data-toggle="tab">Ảnh sản phẩm</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <form role="form" id="formSave" method="POST" th:action="@{/admin/product}" class="tab-content" th:object="${product}">
+                                <div class="tab-pane fade in active" id="tab-primary-1">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default">
+
+                                                <div class="panel-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-8">
+                                                                <div class="form-group">
+                                                                    <label>Tên sản phẩm</label>
+                                                                    <input class="form-control" placeholder="Nhập tên sản phẩm..." th:field="*{name}">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Giá</label>
+                                                                    <input class="form-control" placeholder="Nhập giá sản phẩm..." th:field="*{price}">
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label>Giá khuyến mãi</label>
+                                                                    <input class="form-control" placeholder="Nhập giá sản phẩm khuyến mãi..." th:field="*{price_sale}">
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label>Danh mục sản phẩm</label>
+                                                                    <select class="form-control" th:field="*{categoryId}">
+                                                                        <option th:each="category : ${category}" th:value="${category.getId()}" th:text="${category.categoryName}"></option>
+                                                                    </select>
+                                                                </div>
+
+                                                        </div>
+                                                        <!-- /.col-lg-6 (nested) -->
+                                                        <div class="col-lg-4">
+                                                            <div class="mb-3">
+                                                                <div class="image-preview" id="imagePreview">
+                                                                    <img th:src="@{/upload/shopping-cart.jpg}" alt="Preview">
+                                                                    <div class="upload-icon" id="uploadIcon">
+
+                                                                    </div>
+                                                                </div>
+                                                                <input type="file" class="form-control visually-hidden" name="image_name" id="imageInput">
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.col-lg-6 (nested) -->
+                                                    </div>
+
+                                                </div>
+                                                <!-- /.panel-body -->
+                                            </div>
+                                            <!-- /.panel -->
+                                        </div>
+                                        <!-- /.col-lg-12 -->
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="tab-primary-2">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <textarea name="content" id="description" placeholder="Viết mô tả sản phẩm" th:field="*{description}"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="tab-primary-3">
+                                    <div class="mb-3">
+                                        <!-- Nút tải lên ảnh -->
+                                        <input type="file" id="uploadInput" class="form-control" accept="image/*" multiple>
+                                    </div>
+                                    <form id="imageForm" action="#" method="post">
+                                        <div id="imageList" class="list-unstyled row">
+                                            <div  class="image-item col-lg-2" th:data-id="1" onclick="selectImage(this)">
+                                                <img th:src="@{/upload/shopping-cart.jpg}" width="185" height="185" alt="Image" class="img-fluid rounded">
+                                            </div>
+                                            <div  class="image-item col-lg-2" th:data-id="2" onclick="selectImage(this)">
+                                                <img th:src="@{/upload/products/sneaker/sneaker-1.jpg}" width="185" height="185" alt="Image" class="img-fluid rounded">
+                                            </div>
+                                        </div>
+                                        <input id="selectedImageInput" type="hidden" name="selectedImages" th:value="selectedImages"/>
+                                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                                    </form>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-6 -->
+            </div>
+
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+<!-- jQuery -->
+<script th:src="@{/manager/js/jquery.min.js}"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script th:src="@{/manager/js/bootstrap.min.js}"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script th:src="@{/manager/js/metisMenu.min.js}"></script>
+
+<!-- Custom Theme JavaScript -->
+<script th:src="@{/manager/js/startmin.js}"></script>
+
+<script th:src="@{/admin/form/richeditor/jquery.richtext.min.js}"></script>
+<script>
+    document.getElementById('uploadIcon').addEventListener('click', function() {
+        document.getElementById('imageInput').click();
+    });
+
+    document.getElementById('imageInput').addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imagePreview = document.getElementById('imagePreview');
+                const uploadIcon = document.getElementById('uploadIcon');
+                imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                uploadIcon.style.display = 'none';
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    $('#description').richText();
+
+
+
+</script>
+<style>
+    .image-preview {
+        width: 200px;
+        height: 200px;
+        border: 1px solid #ccc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        position: relative;
+        overflow: hidden;
+
+    }
+    .image-preview img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    /*Upload multi image*/
+
+    .image-item {
+        display: inline-block;
+        margin: 10px;
+        cursor: pointer;
+        border-radius: 10px; /* Độ cong của viền ảnh */
+        transition: border 0.1s ease; /* Hiệu ứng transition cho viền */
+    }
+    .selected {
+        border: 2px solid rgba(0, 0, 255, 0.5); /* Màu viền và độ mờ của viền ảnh khi chọn */
+    }
+    .hidden {
+        display: none;
+    }
+
+</style>
+
+
+
+<script>
+    // Luu mới sản pham
+    function submitForm() {
+            document.getElementById("formSave").submit();
+    }
+
+    // Upload Multi image
+    var selectedImages = [];
+
+    function selectImage(element) {
+        const imageId = element.getAttribute('data-id');
+        const isSelected = selectedImages.includes(imageId);
+
+        if (isSelected) {
+            // Nếu ảnh đã được chọn trước đó, hủy chọn và loại bỏ khỏi mảng selectedImages
+            element.classList.remove('selected');
+            const index = selectedImages.indexOf(imageId);
+            if (index !== -1) {
+                selectedImages.splice(index, 1);
+            }
+        } else {
+            // Nếu ảnh chưa được chọn, chọn nó và thêm vào mảng selectedImages
+            element.classList.add('selected');
+            selectedImages.push(imageId);
+        }
+
+        // Cập nhật giá trị của trường input ẩn với mảng selectedImages
+        document.getElementById('selectedImageInput').value = JSON.stringify(selectedImages);
+    }
+</script>
+
+</body>
+
+</html>

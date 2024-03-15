@@ -43,7 +43,7 @@ public class HomeController {
             String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
 
             // Tạo đường dẫn lưu trữ file
-            Path uploadPath = Paths.get("src/upload/");
+            Path uploadPath = Paths.get("src/main/resources/static/upload");
 
             // Tạo thư mục nếu chưa tồn tại
             if (!Files.exists(uploadPath)) {

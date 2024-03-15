@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -8,6 +10,14 @@ import java.util.Collection;
 public class CustomUserDetails implements UserDetails {
 
     private UserEntity user;
+
+    public String getCurrentUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            return authentication.getName(); // Lấy tên người dùng hiện tại
+        }
+        return null;
+    }
 
     private Collection<? extends GrantedAuthority> authorities;
 
