@@ -69,7 +69,7 @@
                             </div>
                         </div>
                         <div class="panel-body">
-                            <form role="form" id="formSave" method="POST" th:action="@{/admin/product}" class="tab-content" th:object="${product}">
+                            <form role="form" id="formSave" method="POST" th:action="@{/admin/product}" class="tab-content" th:object="${product}" enctype="multipart/form-data">
                                 <div class="tab-pane fade in active" id="tab-primary-1">
                                     <div class="row">
                                         <div class="col-lg-12">
@@ -133,9 +133,9 @@
                                 <div class="tab-pane fade" id="tab-primary-3">
                                     <div class="mb-3">
                                         <!-- Nút tải lên ảnh -->
-                                        <input type="file" id="uploadInput" class="form-control" accept="image/*" multiple>
+                                        <input type="file" id="uploadInput" name="files" class="form-control" accept="image/*" multiple>
                                     </div>
-                                    <form id="imageForm" action="#" method="post">
+                                    <div id="imageForm">
                                         <div id="imageList" class="list-unstyled row">
                                             <div  class="image-item col-lg-2" th:data-id="1" onclick="selectImage(this)">
                                                 <img th:src="@{/upload/shopping-cart.jpg}" width="185" height="185" alt="Image" class="img-fluid rounded">
@@ -143,10 +143,10 @@
                                             <div  class="image-item col-lg-2" th:data-id="2" onclick="selectImage(this)">
                                                 <img th:src="@{/upload/products/sneaker/sneaker-1.jpg}" width="185" height="185" alt="Image" class="img-fluid rounded">
                                             </div>
+                                            <input id="selectedImageInput" type="hidden" name="selectedImages" th:value="selectedImages"/>
                                         </div>
-                                        <input id="selectedImageInput" type="hidden" name="selectedImages" th:value="selectedImages"/>
-                                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
-                                    </form>
+
+                                    </div>
                                 </div>
 
                             </form>
@@ -177,7 +177,7 @@
 <script th:src="@{/manager/js/startmin.js}"></script>
 
 <script th:src="@{/admin/form/richeditor/jquery.richtext.min.js}"></script>
-<script>
+<script type="text/javascript">
     document.getElementById('uploadIcon').addEventListener('click', function() {
         document.getElementById('imageInput').click();
     });
@@ -198,8 +198,74 @@
 
     $('#description').richText();
 
+    /*      AJAX        */
+    $(document).ready(function() {
+        $('#uploadInput').on('change', function() {
+            var formData = new FormData();
+            var files = document.getElementById('uploadInput').files;
+
+            for (var i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            }
 
 
+            $.ajax({
+                url: '/api/upload-files', // Đường dẫn tới endpoint xử lý upload trong Spring Boot
+                type: 'POST',
+                enctype : "multipart/form-data",
+                data: formData,
+                contentType: false,
+                processData: false,
+                timeout : 600000,
+                cache : false,
+                success: function(data) {
+
+                    loadImages();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('Error uploading images:', textStatus, errorThrown);
+                }
+            });
+
+
+        });
+
+        // Hàm gửi yêu cầu AJAX để tải danh sách ảnh
+        function loadImages() {
+            $.ajax({
+                type: 'GET',
+                url: '/api/upload-files',
+                timeout : 600000,
+                cache : false,
+                success: function(response) {
+
+                    renderImageItems(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+        var imageList = $('#imageList');
+        function renderImageItems(imageItems) {
+            $('#imageList').empty();
+            var selectedImageInput = $('<input id="selectedImageInput" type="hidden" name="selectedImages"/>');
+
+            $.each(imageItems, function(index, item) {
+                var imageUrl = '/upload/' + item.imageName;
+                var imageDiv = $('<div class="container image-item col-lg-2 g-4" data-id="' + item.id + '" onclick="selectImage(this)">' +
+                    '<img src="' + imageUrl + '" width="100%" height="185" alt="Image" class="img-fluid rounded">' +
+                    '</div>');
+                imageList.append(imageDiv);
+            });
+
+            imageList.append(selectedImageInput);
+        }
+
+        // Gọi hàm loadImages() khi trang được tải
+        loadImages();
+    })
 </script>
 <style>
     .image-preview {
@@ -268,6 +334,9 @@
         // Cập nhật giá trị của trường input ẩn với mảng selectedImages
         document.getElementById('selectedImageInput').value = JSON.stringify(selectedImages);
     }
+
+
+
 </script>
 
 </body>

@@ -26,42 +26,5 @@ public class HomeController {
     public String admin() {
         return "admin/index";
     }
-    @GetMapping("/upload")
-    public String uploadTest(){
-        return "admin/upload/upload-test";
-    }
-
-    @PostMapping("/upload/save")
-    public String saveFile(@RequestParam("file") MultipartFile file){
-        // Kiểm tra xem file có rỗng không
-        if (file.isEmpty()) {
-            return "Please select a file to upload";
-        }
-
-        try {
-            // Lấy tên file gốc
-            String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
-
-            // Tạo đường dẫn lưu trữ file
-            Path uploadPath = Paths.get("src/main/resources/static/upload");
-
-            // Tạo thư mục nếu chưa tồn tại
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-
-            // Tạo đường dẫn lưu trữ file upload
-            Path filePath = uploadPath.resolve(originalFilename);
-
-            // Lưu file vào thư mục
-            Files.copy(file.getInputStream(), filePath);
-
-            return "File uploaded successfully: " + originalFilename;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Failed to upload file";
-        }
-
-    }
 
 }

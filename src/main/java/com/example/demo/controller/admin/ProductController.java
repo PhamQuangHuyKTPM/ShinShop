@@ -31,6 +31,9 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private FileSystemStorageService storageService;
+
     @GetMapping("")
     public String homePage(Model model){
         List<CategoryEntity> category = categoryService.findAll();
@@ -47,8 +50,9 @@ public class ProductController {
         product.setCreatedDate(LocalDate.now());
         CustomUserDetails customUserDetails = new CustomUserDetails();
         product.setCreatedBy(customUserDetails.getCurrentUsername());
- //       storageService.store(image_name);
-//        product.setImage(image_name.getOriginalFilename());
+        storageService.store(image_name);
+        product.setImage(image_name.getOriginalFilename());
+
         productService.create(product);
 
 

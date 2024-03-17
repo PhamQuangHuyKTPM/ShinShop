@@ -18,10 +18,6 @@ public class FileSystemStorageService implements StorageService {
     public FileSystemStorageService() {
         this.rootLocation = Paths.get("src/main/resources/static/upload");
     }
-    public FileSystemStorageService(String urlName) {
-        this.rootLocation = Paths.get("src/main/resources/static/upload/" + urlName);
-    }
-
     @Override
     public void init() {
         try{
@@ -31,8 +27,9 @@ public class FileSystemStorageService implements StorageService {
         }
     }
     @Override
-    public void store(MultipartFile multipartFile) {
-        try{
+    public void store(MultipartFile file) {
+
+        /*try{
             Path destinationFile = this.rootLocation.resolve(
                     Paths.get(multipartFile.getOriginalFilename()))
                     .normalize().toAbsolutePath();
@@ -41,6 +38,31 @@ public class FileSystemStorageService implements StorageService {
             }
         }catch (IOException e){
             e.printStackTrace();
+        }*/
+        try {
+            Path destinationFile = this.rootLocation.resolve(
+                            Paths.get(file.getOriginalFilename()))
+                    .normalize().toAbsolutePath();
+
+            // Kiểm tra xem tệp đã tồn tại hay chưa
+            if (!Files.exists(destinationFile)) {
+                try (InputStream inputStream = file.getInputStream()) {
+                    Files.copy(inputStream, destinationFile,
+                            StandardCopyOption.REPLACE_EXISTING);
+                }
+            } else {
+                // Tệp đã tồn tại, không cần lưu trữ
+                System.out.println("File already exists: " + destinationFile);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
+    @Override
+    public Path load(String filename) {
+        return rootLocation.resolve(filename);
+    }
+
+
 }
