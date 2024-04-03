@@ -1,9 +1,12 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.controller.admin.ImageController;
+import com.example.demo.dto.ImageDTO;
 import com.example.demo.model.ImageEntity;
 import com.example.demo.repository.ImageRepository;
 import com.example.demo.service.ImageService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +17,12 @@ public class ImageServiceImpl implements ImageService {
 
     @Autowired
     private ImageRepository imageRepository;
+
+    @Autowired
+    private EntityManager entityManager;
+
     @Override
-    public Set<ImageController> getAll() {
+    public Set<ImageDTO> getAll() {
         return null;
     }
 
@@ -40,6 +47,16 @@ public class ImageServiceImpl implements ImageService {
             return true;
         }
         else return false;
+    }
+
+    @Override
+    public ImageEntity saveImage(ImageEntity imageEntity) {
+        return imageRepository.save(imageEntity);
+    }
+
+    @Override
+    public ImageEntity findByImageName(String imageName) {
+        return imageRepository.findByImageName(imageName);
     }
 
 

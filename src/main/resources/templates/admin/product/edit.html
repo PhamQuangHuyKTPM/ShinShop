@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Startmin - Bootstrap Admin Theme</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link th:href="@{/manager/css/bootstrap.min.css}" rel="stylesheet">
+
+
+    <!-- MetisMenu CSS -->
+    <link th:href="@{/manager/css/metisMenu.min.css}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link th:href="@{/manager/css/startmin.css}" rel="stylesheet">
+
+    <link th:href="@{/admin/form/richeditor/richtext.min.css}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link th:href="@{/manager/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <!-- Navigation -->
+    <nav th:replace="admin/fragments/navbar :: navbar"></nav>
+
+    <aside th:replace="~{admin/fragments/sidebar :: sidebar}"></aside>
+    <!-- /.sidebar -->
+
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Chỉnh sửa thông tin</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+
+            <!-- /.row -->
+            <div class="row">
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-12">
+                    <div class="panel tabbed-panel panel-info">
+                        <div class="panel-heading clearfix">
+                            <div class="panel-title pull-right"><button type="submit" class="btn btn-primary mt-3" id="submitForm" onclick="submitForm()">Lưu lại</button></div>
+                            <div class="pull-left">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#tab-primary-1" data-toggle="tab">Thông tin chung</a></li>
+                                    <li><a href="#tab-primary-2" data-toggle="tab">Mô tả sản phẩm</a></li>
+                                    <li><a href="#tab-primary-3" data-toggle="tab">Ảnh sản phẩm</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <form role="form" id="formSave" method="POST" th:action="@{/admin/product/edit}" class="tab-content" th:object="${product}" enctype="multipart/form-data">
+                                <div class="tab-pane fade in active" id="tab-primary-1">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default">
+
+                                                <div class="panel-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-8">
+                                                            <div class="form-group">
+                                                                <label>Tên sản phẩm</label>
+                                                                <input class="form-control" type="hidden"  th:field="*{id}">
+                                                                <input class="form-control" id="name" placeholder="Nhập tên sản phẩm..." th:field="*{name}">
+                                                                <span id="nameError" class="error"></span>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Danh mục sản phẩm</label>
+                                                                <select class="form-control" th:field="*{categoryId}">
+                                                                    <option th:each="category : ${category}" th:value="${category.getId()}" th:if="${category.getId() == product.categoryId.getId()} ? selected : 'selecte'" th:text="${category.categoryName}"></option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Size</label>
+                                                                <label th:each="size : ${sizes}" class="checkbox-inline">
+                                                                    <input type="checkbox" th:text="${size.sizeName}" name="sizes" th:checked="${findSize.contains(size.getId()) } ? checked : null"  th:value="${size.id}">
+                                                                </label>
+                                                            </div>
+
+
+                                                            <div class="form-group">
+                                                                <label>Giá</label>
+                                                                <input class="form-control" id="price" placeholder="Nhập giá sản phẩm..." th:field="*{price}">
+                                                                <span id="priceError" class="error"></span>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Giá khuyến mãi</label>
+                                                                <input class="form-control" id="price_sale" placeholder="Nhập giá sản phẩm khuyến mãi..." th:field="*{price_sale}">
+                                                                <span id="price_saleError" class="error"></span>
+                                                            </div>
+
+
+
+                                                        </div>
+                                                        <!-- /.col-lg-6 (nested) -->
+                                                        <div class="col-lg-4">
+                                                            <div class="mb-3">
+                                                                <div class="image-preview" id="imagePreview">
+                                                                    <img th:src="@{/api/files/{img}(img=${product.image})}" alt="Preview">
+
+                                                                </div>
+                                                                <input type="hidden" th:field="*{image}"  id="image_name"/>
+                                                                <input type="file" class="form-control visually-hidden" name="image_name" id="imageInput">
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.col-lg-6 (nested) -->
+                                                    </div>
+
+                                                </div>
+                                                <!-- /.panel-body -->
+                                            </div>
+                                            <!-- /.panel -->
+                                        </div>
+                                        <!-- /.col-lg-12 -->
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="tab-primary-2">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <textarea name="content" id="description" placeholder="Viết mô tả sản phẩm" th:field="*{description}">
+
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="tab-primary-3">
+                                    <div class="mb-3">
+                                        <!-- Nút tải lên ảnh -->
+                                        <input type="file" id="uploadInput" name="files" class="form-control" accept="image/*" multiple>
+                                    </div>
+                                    <div id="imageForm">
+                                        <div id="imageList" class="list-unstyled row row-cols-1 row-cols-md-6 g-4">
+
+                                            <input id="selectedImageInput" type="hidden" name="selectedImages" th:value="selectedImages"/>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-6 -->
+            </div>
+
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+<!-- jQuery -->
+<script th:src="@{/manager/js/jquery.min.js}"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script th:src="@{/manager/js/bootstrap.min.js}"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script th:src="@{/manager/js/metisMenu.min.js}"></script>
+
+<!-- Custom Theme JavaScript -->
+<script th:src="@{/manager/js/startmin.js}"></script>
+
+<script th:src="@{/admin/form/richeditor/jquery.richtext.min.js}"></script>
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
+
+<script th:src="@{/admin/validate/validate.js}"></script>
+
+</script>
+<script type="text/javascript">
+
+    document.getElementById('imageInput').addEventListener('change', function() {
+        const file = this.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imagePreview = document.getElementById('imagePreview');
+                const uploadIcon = document.getElementById('uploadIcon');
+                imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                uploadIcon.style.display = 'none';
+                console.log(file);
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    $('#description').richText();
+
+
+
+    /*      AJAX        */
+    $(document).ready(function() {
+        $('#uploadInput').on('change', function() {
+            var formData = new FormData();
+            var files = document.getElementById('uploadInput').files;
+
+            for (var i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            }
+
+
+            $.ajax({
+                url: '/api/gallery-product', // Đường dẫn tới endpoint xử lý upload trong Spring Boot
+                type: 'POST',
+                enctype : "multipart/form-data",
+                data: formData,
+                contentType: false,
+                processData: false,
+                timeout : 600000,
+                cache : false,
+                success: function(response) {
+                    response.forEach(function(objArray) {
+                        var imageUrl = '/api/files/' + objArray.imageName;
+
+                        var stringId = objArray.id.toString();
+                        const isSelected = selectedImages.includes(stringId);
+                        if(!isSelected){
+                            var imageDiv = $('<div class="container image-item col-lg-2 g-4 selected" data-id="' + objArray.id + '"  onclick="selectImage(this)"></div>');
+
+                            var imageContainer = $('<div class="image-container"></div>');
+                            var imageElement = $('<img src="' + imageUrl + '" width="100%" height="100%" alt="Image" class="img-fluid rounded">');
+
+                            imageContainer.append(imageElement);
+
+                            imageDiv.append(imageContainer);
+                            imageList.append(imageDiv);
+                            selectedImages.push(stringId);
+                        }
+                    });
+                    document.getElementById('selectedImageInput').value = JSON.stringify(selectedImages);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('Error uploading images:', textStatus, errorThrown);
+                }
+            });
+
+
+        });
+
+        var imageList = $('#imageList');
+        // Hàm gửi yêu cầu AJAX để tải danh sách ảnh
+        function loadImages() {
+            $.ajax({
+                type: 'GET',
+                url: '/api/gallery-product/' + [[${product.id}]],
+                timeout : 600000,
+                cache : false,
+                success: function(response) {
+
+                    imageList.append(selectedImageInput);
+
+
+                    response.forEach(function(objArray) {
+                        var imageUrl = '/api/files/' + objArray[1];
+
+                        var stringId = objArray[0].toString();
+
+                        var imageDiv = $('<div class="container image-item col-lg-2 g-4 selected" data-id="' + objArray[0] + '"  onclick="selectImage(this)"></div>');
+
+                        var imageContainer = $('<div class="image-container"></div>');
+                        var imageElement = $('<img src="' + imageUrl + '" width="100%" height="100%" alt="Image" class="img-fluid rounded">');
+
+                        imageContainer.append(imageElement);
+
+                        imageDiv.append(imageContainer);
+                        imageList.append(imageDiv);
+                        selectedImages.push(stringId);
+
+                    });
+                    document.getElementById('selectedImageInput').value = JSON.stringify(selectedImages);
+
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+
+        // Gọi hàm loadImages() khi trang được tải
+        loadImages();
+    })
+</script>
+<style>
+    .image-preview {
+        width: 200px;
+        height: 200px;
+        border: 1px solid #ccc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        position: relative;
+        overflow: hidden;
+
+    }
+    .image-preview img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    #imageList{
+        margin : 10px 5px;
+    }
+
+
+    /*Upload multi image*/
+
+    .image-item {
+        margin-bottom: 10px;
+        border-radius: 10px; /* Độ cong của viền ảnh */
+        transition: all 0.3s ease;
+        outline: 2px solid transparent;
+        /*border: 2px solid transparent; !* Thêm border mặc định với màu trong suốt *!*/
+        box-sizing: border-box; /* Tính border vào kích thước tổng */
+
+    }
+
+    .image-container{
+        height: 185px;
+    }
+
+    .selected{
+        outline-color: transparent; /* Không hiển thị đường viền mặc định */
+        box-shadow: 0 0 0 2px rgba(0, 0, 255, 0.5), 0 0 0 4px transparent; /* Thêm viền bóng với màu và độ dày tương ứng, và khoảng cách giữa các viền */
+    }
+    .hidden {
+        display: none;
+    }
+
+</style>
+
+
+
+<script>
+
+    // Upload Multi image
+    var selectedImages = [];
+
+    function selectImage(element) {
+        const imageId = element.getAttribute('data-id');
+        const isSelected = selectedImages.includes(imageId);
+
+        if (isSelected) {
+            // Nếu ảnh đã được chọn trước đó, hủy chọn và loại bỏ khỏi mảng selectedImages
+            element.classList.remove('selected');
+            const index = selectedImages.indexOf(imageId);
+            if (index !== -1) {
+                selectedImages.splice(index, 1);
+            }
+        } else {
+            // Nếu ảnh chưa được chọn, chọn nó và thêm vào mảng selectedImages
+            element.classList.add('selected');
+            selectedImages.push(imageId);
+        }
+
+        // Cập nhật giá trị của trường input ẩn với mảng selectedImages
+        document.getElementById('selectedImageInput').value = JSON.stringify(selectedImages);
+
+    }
+</script>
+
+</body>
+
+</html>

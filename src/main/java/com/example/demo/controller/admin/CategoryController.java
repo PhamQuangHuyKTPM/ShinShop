@@ -37,15 +37,6 @@ public class CategoryController {
         return "admin/category/add-category";
     }
 
-    /*@PostMapping("/add-category")
-    public String save(@ModelAttribute("category") CategoryEntity category, @Valid @RequestBody CategoryDTO categoryDTO){
-        if(this.categoryService.create(category)){
-            return "redirect:/admin/category";
-        }else{
-            return "admin/category/add-category";
-        }
-    }*/
-
     @PostMapping("/add-category")
     public String save(@Valid @ModelAttribute("category") CategoryDTO categoryDTO, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {

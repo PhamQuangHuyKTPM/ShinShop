@@ -22,18 +22,19 @@ public class ProductEntity {
     private String description;
     private String color;
 
-    @JsonIgnore
+
     private String image;
 
     private LocalDate createdDate;
     private String createdBy;
-    private Date modifiedDate;
+    private LocalDate modifiedDate;
     private String modifiedBy;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "product_image",
@@ -41,6 +42,15 @@ public class ProductEntity {
             inverseJoinColumns = @JoinColumn(name = "image_id")
     )
     private Set<ImageEntity> galleries = new HashSet<>();
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "product_size",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "size_id")
+    )
+    private Set<SizeEntity> size = new HashSet<>();
 
     public ProductEntity() {
     }
@@ -137,11 +147,11 @@ public class ProductEntity {
         this.createdBy = createdBy;
     }
 
-    public Date getModifiedDate() {
+    public LocalDate getModifiedDate() {
         return modifiedDate;
     }
 
-    public void setModifiedDate(Date modifiedDate) {
+    public void setModifiedDate(LocalDate modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 
@@ -159,6 +169,22 @@ public class ProductEntity {
 
     public void setGalleries(Set<ImageEntity> galleries) {
         this.galleries = galleries;
+    }
+
+    public Set<SizeEntity> getSize() {
+        return size;
+    }
+
+    public void setSize(Set<SizeEntity> size) {
+        this.size = size;
+    }
+
+    public CategoryEntity getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryEntity category) {
+        this.category = category;
     }
 }
 
