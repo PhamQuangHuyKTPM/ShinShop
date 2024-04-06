@@ -1,11 +1,15 @@
 package com.example.demo.controller.web;
 
+import com.example.demo.model.ProductEntity;
+import com.example.demo.model.UserEntity;
 import com.example.demo.service.ProductService;
 import com.example.demo.service.StorageService;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,43 +25,30 @@ import java.util.stream.Collectors;
 public class HomeWebController {
 
     @Autowired
-    private StorageService storage;
+    private ProductService productService;
 
     @Autowired
-    private ProductService productService;
+    private UserService userService;
 
     @GetMapping("")
     public String index(Model model) {
         model.addAttribute("productList", productService.findAll());
-        return "index";
+        return "web/index";
     }
 
-    @GetMapping("/test")
-    public String test(Model model) throws IOException {
-        model.addAttribute("files", storage.loadAll().map(
-                        path -> MvcUriComponentsBuilder.fromMethodName(HomeWebController.class,
-                                "serveFile", path.getFileName().toString()).build().toUri().toString())
-                .collect(Collectors.toList()));
-        return "/test";
+    @GetMapping("/login")
+    public String formLogin(){
+        return "web/login";
     }
 
-    @GetMapping("/files/{filename:.+}")
-    @ResponseBody
-    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-
-        Resource file = storage.loadAsResource(filename);
-
-        if (file == null)
-            return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
-    }
-
-    @PostMapping("/test")
-    public String saveTest(@RequestParam("file") MultipartFile file){
-        this.storage.store(file);
-        return "/test";
+    @PostMapping("/register")
+    public String registryAccount(@ModelAttribute("user") UserEntity user){
+        String pass = new BCryptPasswordEncoder().encode(user.getPassword());
+        user.setPassword(pass);
+        user.setEnable(true);
+        userService.save(user);
+        userService.saveUserRole(2, user.getId());
+        return "web/login";
     }
 
 

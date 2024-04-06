@@ -28,6 +28,13 @@ public class ProductAPI {
 
     @Autowired
     private ProductValidator productValidator;
+
+    @GetMapping("")
+    public ResponseEntity<?> getAllProducts(){
+        List<ProductEntity> products = productService.findAll();
+        return ResponseEntity.ok(products);
+    }
+
     @PostMapping("/edit")
     public ResponseEntity<?> updateProduct(@RequestBody ProductEntity product){
 

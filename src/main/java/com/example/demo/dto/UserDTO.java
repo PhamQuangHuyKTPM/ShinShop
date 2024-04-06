@@ -1,19 +1,22 @@
-package com.example.demo.model;
+package com.example.demo.dto;
 
-import jakarta.persistence.*;
+import com.example.demo.model.UserRole;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Set;
 
-@Entity
-@Table(name = "user")
-public class UserEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserDTO {
     private Long id;
-
+    @NotBlank(message = "Không được để trống")
     private String username;
+
+    @NotEmpty(message = "Không được để trống")
     private String password;
+
+    @NotEmpty(message = "Không được để trống")
+    private String repeatPassword;
     private String email;
 
     private String phone;
@@ -21,27 +24,20 @@ public class UserEntity {
 
     private Boolean enable;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<UserRole> userRoles;
 
-    public UserEntity() {
+    public UserDTO() {
     }
 
-    public UserEntity(Long id, String username, String password, String email, Boolean enable, Set<UserRole> userRoles) {
+    public UserDTO(Long id, String username, String password, String email, String phone, String address, Boolean enable, Set<UserRole> userRoles) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
+        this.phone = phone;
+        this.address = address;
         this.enable = enable;
         this.userRoles = userRoles;
-    }
-
-    public Boolean getEnable() {
-        return enable;
-    }
-
-    public void setEnable(Boolean enable) {
-        this.enable = enable;
     }
 
     public Long getId() {
@@ -67,6 +63,13 @@ public class UserEntity {
     public void setPassword(String password) {
         this.password = password;
     }
+    public String getRepeatPassword() {
+        return repeatPassword;
+    }
+
+    public void setRepeatPassword(String repeatPassword) {
+        this.repeatPassword = repeatPassword;
+    }
 
     public String getEmail() {
         return email;
@@ -74,14 +77,6 @@ public class UserEntity {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Set<UserRole> getUserRoles() {
-        return userRoles;
-    }
-
-    public void setUserRoles(Set<UserRole> userRoles) {
-        this.userRoles = userRoles;
     }
 
     public String getPhone() {
@@ -98,5 +93,21 @@ public class UserEntity {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Boolean getEnable() {
+        return enable;
+    }
+
+    public void setEnable(Boolean enable) {
+        this.enable = enable;
+    }
+
+    public Set<UserRole> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Set<UserRole> userRoles) {
+        this.userRoles = userRoles;
     }
 }

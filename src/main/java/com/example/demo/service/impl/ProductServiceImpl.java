@@ -21,7 +21,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
     @Override
     public List<ProductEntity> findAll() {
-        return null;
+        return productRepository.findAll();
     }
 
     @Override
