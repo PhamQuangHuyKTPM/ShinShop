@@ -22,7 +22,6 @@ public class ProductEntity {
     private String description;
     private String color;
 
-
     private String image;
 
     private LocalDate createdDate;
@@ -30,11 +29,11 @@ public class ProductEntity {
     private LocalDate modifiedDate;
     private String modifiedBy;
 
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "product_image",
@@ -43,7 +42,6 @@ public class ProductEntity {
     )
     private Set<ImageEntity> galleries = new HashSet<>();
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "product_size",
@@ -51,6 +49,10 @@ public class ProductEntity {
             inverseJoinColumns = @JoinColumn(name = "size_id")
     )
     private Set<SizeEntity> size = new HashSet<>();
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "product")
+    private CartItemEntity cartItem;
 
     public ProductEntity() {
     }
@@ -185,6 +187,14 @@ public class ProductEntity {
 
     public void setCategory(CategoryEntity category) {
         this.category = category;
+    }
+
+    public CartItemEntity getCartItem() {
+        return cartItem;
+    }
+
+    public void setCartItem(CartItemEntity cartItem) {
+        this.cartItem = cartItem;
     }
 }
 

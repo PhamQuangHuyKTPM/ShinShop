@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -21,8 +22,13 @@ public class UserEntity {
 
     private Boolean enable;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<UserRole> userRoles;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private CartEntity cart;
 
     public UserEntity() {
     }
@@ -98,5 +104,13 @@ public class UserEntity {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public CartEntity getCart() {
+        return cart;
+    }
+
+    public void setCart(CartEntity cart) {
+        this.cart = cart;
     }
 }

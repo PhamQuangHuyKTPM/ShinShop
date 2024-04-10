@@ -78,12 +78,6 @@ public class ImageAPI {
         Map<String, Object> responseData = new HashMap<>();
         responseData.put("dataList", images);
 
-        List<String> loadImages =  storageService.loadAll().map(
-                path -> MvcUriComponentsBuilder.fromMethodName(HomeWebController.class,"serveFile",
-                path.getFileName().toString()).build().toUri().toString())
-                .collect(Collectors.toList());
-
-        responseData.put("loadImages", loadImages);
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 

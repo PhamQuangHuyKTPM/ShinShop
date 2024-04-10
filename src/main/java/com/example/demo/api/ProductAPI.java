@@ -7,6 +7,7 @@ import com.example.demo.service.ProductService;
 import com.example.demo.validator.ProductValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -31,15 +32,21 @@ public class ProductAPI {
 
     @GetMapping("")
     public ResponseEntity<?> getAllProducts(){
-        List<ProductEntity> products = productService.findAll();
-        return ResponseEntity.ok(products);
+        try {
+            List<ProductEntity> products = productService.findAll();
+            return ResponseEntity.ok(products);
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi khi lấy danh sách sản phẩm: " + e.getMessage());
+        }
     }
 
     @PostMapping("/edit")
     public ResponseEntity<?> updateProduct(@RequestBody ProductEntity product){
 
         try{
-
             product.setModifiedDate(LocalDate.now());
             CustomUserDetails customUserDetails = new CustomUserDetails();
             product.setModifiedBy(customUserDetails.getCurrentUsername());

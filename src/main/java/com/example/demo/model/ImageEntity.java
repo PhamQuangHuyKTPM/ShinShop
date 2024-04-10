@@ -14,6 +14,7 @@ public class ImageEntity {
     private Integer id;
     private String imageName;
 
+
     @ManyToMany(mappedBy = "galleries")
     private Set<ProductEntity> products = new HashSet<>();
 

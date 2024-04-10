@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,8 +23,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserEntity findById(Integer id) {
+        return null;
+    }
+
+    @Override
     public UserEntity save(UserEntity user) {
         return userRepository.save(user);
+    }
+
+    @Override
+    public List<UserEntity> findAll() {
+        return userRepository.findAll();
     }
 
     @Override
