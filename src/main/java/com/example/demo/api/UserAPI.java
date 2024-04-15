@@ -24,4 +24,13 @@ public class UserAPI {
         return ResponseEntity.ok(list);
     }
 
+    @GetMapping("/user-details")
+    public ResponseEntity<?> userDetail(Principal principal){
+        if(principal == null){
+            return ResponseEntity.ok("null");
+        }
+
+        return ResponseEntity.ok("ok");
+    }
+
 }

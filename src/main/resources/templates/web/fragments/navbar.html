@@ -10,51 +10,7 @@
             <nav class="navigation">
                 <ul class="navigation__list list-unstyled d-flex">
                     <li class="navigation__item">
-                        <a href="#" class="navigation__link">Home</a>
-                        <div class="box-menu" style="width: 800px; left: 195px;">
-                            <div class="col pe-4">
-                                <ul class="sub-menu__list list-unstyled">
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo1/index.html" class="menu-link menu-link_us-s">Home 1</a></li>
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo2/index.html" class="menu-link menu-link_us-s">Home 2</a></li>
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo3/index.html" class="menu-link menu-link_us-s">Home 3</a></li>
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo4/index.html" class="menu-link menu-link_us-s">Home 4</a></li>
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo5/index.html" class="menu-link menu-link_us-s">Home 5</a></li>
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo6/index.html" class="menu-link menu-link_us-s">Home 6</a></li>
-                                </ul>
-                            </div>
-
-                            <div class="col pe-4">
-                                <ul class="sub-menu__list list-unstyled">
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo7/index.html" class="menu-link menu-link_us-s">Home 7</a></li>
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo8/index.html" class="menu-link menu-link_us-s">Home 8</a></li>
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo9/index.html" class="menu-link menu-link_us-s">Home 9</a></li>
-                                    <li class="sub-menu__item"><a href="index.html" class="menu-link menu-link_us-s">Home 10</a></li>
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo11/index.html" class="menu-link menu-link_us-s">Home 11</a></li>
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo12/index.html" class="menu-link menu-link_us-s">Home 12</a></li>
-                                </ul>
-                            </div>
-
-                            <div class="col pe-4">
-                                <ul class="sub-menu__list list-unstyled">
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo13/index.html" class="menu-link menu-link_us-s">Home 13</a></li>
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo14/index.html" class="menu-link menu-link_us-s">Home 14</a></li>
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo15/index.html" class="menu-link menu-link_us-s">Home 15</a></li>
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo16/index.html" class="menu-link menu-link_us-s">Home 16</a></li>
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo17/index.html" class="menu-link menu-link_us-s">Home 17</a></li>
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo18/index.html" class="menu-link menu-link_us-s">Home 18</a></li>
-                                </ul>
-                            </div>
-
-                            <div class="col">
-                                <ul class="sub-menu__list list-unstyled">
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo19/index.html" class="menu-link menu-link_us-s">Home 19</a></li>
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo20/index.html" class="menu-link menu-link_us-s">Home 20</a></li>
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo21/index.html" class="menu-link menu-link_us-s">Home 21</a></li>
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo22/index.html" class="menu-link menu-link_us-s">Home 22</a></li>
-                                    <li class="sub-menu__item"><a href="https://uomo-html.flexkitux.com/Demo23/index.html" class="menu-link menu-link_us-s">Home 23</a></li>
-                                </ul>
-                            </div>
-                        </div><!-- /.box-menu -->
+                        <a href="/home" class="navigation__link">Home</a>
                     </li>
                     <li class="navigation__item">
                         <a href="#" class="navigation__link">Shop</a>
@@ -194,14 +150,14 @@
                 </div><!-- /.header-tools__item hover-container -->
 
                 <div class="header-tools__item hover-container">
-                    <a class="header-tools__item js-open-aside" href="#" data-aside="customerForms">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_user"></use></svg>
+                    <a class="header-tools__item js-open-aside" th:href="@{/home/login}">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" id="user-detail"><use href="#icon_user"></use></svg>
                     </a>
                 </div>
 
                 <a href="#" class="header-tools__item header-tools__cart js-open-aside" data-aside="cartDrawer">
                     <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_cart"></use></svg>
-                    <span class="cart-amount d-block position-absolute js-cart-items-count">3</span>
+                    <span class="cart-amount d-block position-absolute js-cart-items-count" th:text="${session.totalItems == null} ? '0' : ${session.totalItems}"></span>
                 </a>
 
                 <a class="header-tools__item" href="account_wishlist.html">

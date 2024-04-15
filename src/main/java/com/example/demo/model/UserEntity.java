@@ -3,6 +3,7 @@ package com.example.demo.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -14,6 +15,9 @@ public class UserEntity {
     private Long id;
 
     private String username;
+
+    private String fullname;
+
     private String password;
     private String email;
 
@@ -29,6 +33,10 @@ public class UserEntity {
     @JsonIgnore
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private CartEntity cart;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user_order")
+    private List<OrderEntity> orders;
 
     public UserEntity() {
     }
@@ -112,5 +120,13 @@ public class UserEntity {
 
     public void setCart(CartEntity cart) {
         this.cart = cart;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 }

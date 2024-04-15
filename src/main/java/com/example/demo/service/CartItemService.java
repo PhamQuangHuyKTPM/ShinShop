@@ -5,4 +5,8 @@ import com.example.demo.model.CartItemEntity;
 
 public interface CartItemService {
     CartItemEntity findFirstByCartOrderByIdDesc(CartEntity cart);
+
+    CartItemEntity findById(Integer id);
+
+    void deleteAllByCartId(Long carId);
 }

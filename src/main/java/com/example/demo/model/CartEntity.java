@@ -20,7 +20,7 @@ public class CartEntity {
     private UserEntity user;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private Set<CartItemEntity> cartItems;
 
     public Long getId() {
@@ -73,4 +73,5 @@ public class CartEntity {
                 ", cartItems=" + cartItems +
                 '}';
     }
+
 }

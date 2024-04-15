@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.model.CategoryEntity;
 import com.example.demo.model.ProductEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -11,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity, Integer> {
@@ -52,4 +54,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
     List<Object[]> findAllSizeOfProduct();
     @Query(value = "INSERT INTO product_size (product_id, size_id) VALUES (:productId, :sizeId)", nativeQuery = true)
     void saveProductSize(Integer productId, Integer sizeId);
+
+    Set<ProductEntity> findProductByCategory(CategoryEntity category);
+
 }

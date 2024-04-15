@@ -43,6 +43,19 @@ public class ProductAPI {
         }
     }
 
+    @GetMapping("/find/{id}")
+    public ResponseEntity<?> findProductById(@PathVariable("id") Integer id){
+        try {
+            ProductEntity product = productService.findById(id);
+            return ResponseEntity.ok(product);
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi khi lấy danh sách sản phẩm: " + e.getMessage());
+        }
+    }
+
     @PostMapping("/edit")
     public ResponseEntity<?> updateProduct(@RequestBody ProductEntity product){
 

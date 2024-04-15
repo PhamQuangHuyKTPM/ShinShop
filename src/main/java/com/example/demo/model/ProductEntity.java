@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -48,7 +49,7 @@ public class ProductEntity {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "size_id")
     )
-    private Set<SizeEntity> size = new HashSet<>();
+    private Set<SizeEntity> size;
 
     @JsonIgnore
     @OneToOne(mappedBy = "product")

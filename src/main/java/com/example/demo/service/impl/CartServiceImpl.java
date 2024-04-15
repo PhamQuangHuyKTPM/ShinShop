@@ -1,9 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.CartEntity;
-import com.example.demo.model.CartItemEntity;
-import com.example.demo.model.ProductEntity;
-import com.example.demo.model.UserEntity;
+import com.example.demo.model.*;
 import com.example.demo.repository.CartItemRepository;
 import com.example.demo.repository.CartRepository;
 import com.example.demo.service.CartService;
@@ -23,7 +20,7 @@ public class CartServiceImpl implements CartService {
     private CartRepository cartRepository;
 
     @Override
-    public CartEntity addItemToCart(ProductEntity product, int quantity, UserEntity user) {
+    public CartEntity addItemToCart(ProductEntity product, int quantity, UserEntity user, String size) {
 
         CartEntity cart = user.getCart();
         if(cart == null){
@@ -40,6 +37,17 @@ public class CartServiceImpl implements CartService {
                 cartItem.setTotalPrice(quantity * product.getPrice());
                 cartItem.setQuantity(quantity);
                 cartItem.setCart(cart);
+                if(size == null){
+                    if(product.getSize().iterator().next() == null){
+                        cartItem.setSize(null);
+                    }else {
+                        cartItem.setSize(product.getSize().iterator().next().getSizeName());
+                    }
+                }
+                else{
+                    cartItem.setSize(size);
+                }
+
                 cartItems.add(cartItem);
                 cartItemRepository.save(cartItem);
             }
@@ -50,6 +58,16 @@ public class CartServiceImpl implements CartService {
                 cartItem.setTotalPrice(quantity * product.getPrice());
                 cartItem.setQuantity(quantity);
                 cartItem.setCart(cart);
+                if(size == null){
+                    if(product.getSize().iterator().next() == null){
+                        cartItem.setSize(null);
+                    }else {
+                        cartItem.setSize(product.getSize().iterator().next().getSizeName());
+                    }
+                }
+                else{
+                    cartItem.setSize(size);
+                }
                 cartItems.add(cartItem);
                 cartItemRepository.save(cartItem);
             }else{
@@ -108,6 +126,10 @@ public class CartServiceImpl implements CartService {
         return cartRepository.save(cart);
     }
 
+    @Override
+    public CartEntity findById(Integer id) {
+        return cartRepository.findById(id);
+    }
 
     private CartItemEntity findCartItem(Set<CartItemEntity> cartItems, Integer productId){
         if(cartItems == null){

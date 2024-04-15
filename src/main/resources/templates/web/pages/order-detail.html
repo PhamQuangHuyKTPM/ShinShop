@@ -18,7 +18,7 @@
     <link rel="stylesheet" th:href="@{/web/css/style.css}" type="text/css">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Giỏ hàng</title>
+    <title>Chi tiết đơn hàng</title>
 </head>
 <body>
 <div th:replace="web/fragments/unknow_code :: unknow_code"></div>
@@ -29,121 +29,82 @@
 <header th:replace="web/fragments/navbar :: navbar"></header>
 <!-- End Header Type 1 -->
 
-<main>
+<main style="padding-top: 90px;">
     <div class="mb-4 pb-4"></div>
     <section class="shop-checkout container">
-        <h2 class="page-title">Cart</h2>
-        <div class="checkout-steps">
-            <a href="shop_cart.html" class="checkout-steps__item active">
-                <span class="checkout-steps__item-number">01</span>
-                <span class="checkout-steps__item-title">
-            <span>Shopping Bag</span>
-            <em>Manage Your Items List</em>
-          </span>
-            </a>
-            <a href="shop_checkout.html" class="checkout-steps__item">
-                <span class="checkout-steps__item-number">02</span>
-                <span class="checkout-steps__item-title">
-            <span>Shipping and Checkout</span>
-            <em>Checkout Your Items List</em>
-          </span>
-            </a>
-            <a href="shop_order_complete.html" class="checkout-steps__item">
-                <span class="checkout-steps__item-number">03</span>
-                <span class="checkout-steps__item-title">
-            <span>Confirmation</span>
-            <em>Review And Submit Your Order</em>
-          </span>
-            </a>
+      <h2 class="page-title">Chi tiết đơn hàng</h2>
+      <div class="order-complete">
+        <div class="order-complete__message">
+          <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="40" cy="40" r="40" fill="#B9A16B"></circle>
+            <path d="M52.9743 35.7612C52.9743 35.3426 52.8069 34.9241 52.5056 34.6228L50.2288 32.346C49.9275 32.0446 49.5089 31.8772 49.0904 31.8772C48.6719 31.8772 48.2533 32.0446 47.952 32.346L36.9699 43.3449L32.048 38.4062C31.7467 38.1049 31.3281 37.9375 30.9096 37.9375C30.4911 37.9375 30.0725 38.1049 29.7712 38.4062L27.4944 40.683C27.1931 40.9844 27.0257 41.4029 27.0257 41.8214C27.0257 42.24 27.1931 42.6585 27.4944 42.9598L33.5547 49.0201L35.8315 51.2969C36.1328 51.5982 36.5513 51.7656 36.9699 51.7656C37.3884 51.7656 37.8069 51.5982 38.1083 51.2969L40.385 49.0201L52.5056 36.8996C52.8069 36.5982 52.9743 36.1797 52.9743 35.7612Z" fill="white"></path>
+          </svg>
+          <h3>Đơn hàng đã đặt thành công!</h3>
+          <p>Xin cảm ơn!. Đơn hàng của quý khách đã được gửi đến chúng tôi</p>
         </div>
-        <div th:if="${check}" class="text-center alert-warning pt-4 pb-4 mt-5">
-            <p th:text="${check}"></p>
+        <div class="order-info">
+          <div class="order-info__item">
+            <label>Mã đơn hàng</label>
+            <span th:text="${order.id}"></span>
+          </div>
+          <div class="order-info__item">
+            <label>Ngày đặt hàng</label>
+            <span th:text="${order.getFormattedOrderDate()}"></span>
+          </div>
+          <div class="order-info__item">
+            <label>Tổng tiền</label>
+            <span></span>
+          </div>
+          <div class="order-info__item">
+            <label>Phương thức thanh toán</label>
+            <span th:text="${order.payMethod}"></span>
+          </div>
         </div>
-        <div class="shopping-cart" th:if="${check == null}">
+        <div class="checkout__totals-wrapper">
+          <div class="checkout__totals">
+            <table class="checkout-cart-items">
+              <thead>
+                <tr>
+                  <th>Sản phẩm</th>
+                  <th th:text="${order.getTotalPriceVND()}"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="orderItem : ${order.getOrderDetails()}">
+                  <td th:text="${orderItem.getProduct().getName()} + ' x' + ${orderItem.soluong}">
 
-            <div class="cart-table__wrapper">
-                <table class="cart-table">
-                    <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th></th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Subtotal</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="cartItem : ${shoppingCart.cartItems}">
-                        <input type="hidden" class="shopping-cart__product-item__id" th:value="${cartItem.product.id}">
-                        <td>
-                            <div class="shopping-cart__product-item">
-                                <img loading="lazy" th:src="@{/api/files/{img}(img=${cartItem.product.image})}" width="120" height="120" alt="">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="shopping-cart__product-item__detail">
-                                <h4 th:text="${cartItem.product.name}"></h4>
-                                <ul class="shopping-cart__product-item__options">
-                                    <li>Size</li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="shopping-cart__product-price" th:text="${cartItem.product.price}"></span>
-                        </td>
-                        <td>
-                            <div class="qty-control position-relative">
-                                <input type="number" name="quantity"  min="1" th:value="${cartItem.quantity}" class="qty-control__number text-center">
-                                <div class="qty-control__reduce">-</div>
-                                <div class="qty-control__increase">+</div>
-                            </div><!-- .qty-control -->
-                        </td>
-                        <td>
-                            <span class="shopping-cart__subtotal" th:text="${cartItem.totalPrice}"></span>
-                        </td>
-                        <td>
-                            <a href="#" class="remove-cart">
-                                <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z"/>
-                                    <path d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z"/>
-                                </svg>
-                            </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div class="cart-table-footer">
-                    <form action="https://uomo-html.flexkitux.com/Demo10/" class="position-relative bg-body">
-                        <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code">
-                        <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit" value="APPLY COUPON">
-                    </form>
-                    <button class="btn btn-light">UPDATE CART</button>
-                </div>
-            </div>
-            <div class="shopping-cart__totals-wrapper">
-                <div class="sticky-content">
-                    <div class="shopping-cart__totals">
-                        <h3>Cart Totals</h3>
-                        <table class="cart-totals">
-                            <tbody>
-                            <tr>
-                                <th>Subtotal</th>
-                                <td id="totalCartPrice" th:text="${shoppingCart.totalPrices}"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="mobile_fixed-btn_wrapper">
-                        <div class="button-wrapper container">
-                            <a th:href="@{/home/checkout}" class="btn btn-primary btn-checkout">Thanh toán</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                  </td>
+                  <td th:text="${orderItem.getTotalPriceVND()}">
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="checkout-totals">
+              <tbody>
+                  <tr>
+                      <th>Ghi chú  </th>
+                      <td th:text="${order.ghiChu}">/td>
+                  </tr>
+                <tr>
+                  <th>Tạm Tính  </th>
+                  <td th:text="${order.getSubTotalVND()}">/td>
+                </tr>
+                <tr>
+                  <th>Phí Ship</th>
+                  <td>35.000</td>
+                </tr>
+                <tr>
+                  <th>Tổng tiền</th>
+                  <td th:text="${order.getTotalPriceVND()}"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+      </div>
     </section>
-</main>
+  </main>
 
 <div class="mb-5 pb-xl-5"></div>
 

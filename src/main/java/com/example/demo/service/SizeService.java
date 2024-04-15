@@ -14,4 +14,6 @@ public interface SizeService {
     List<Integer> findSizeProduct(Integer productId);
 
     void deleteSizeFromProductId(Integer productId);
+
+    List<SizeEntity> findAllByOrderBySizeNameDesc();
 }

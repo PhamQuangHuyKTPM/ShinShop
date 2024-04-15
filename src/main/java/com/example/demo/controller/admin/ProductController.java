@@ -89,9 +89,6 @@ public class ProductController {
                 storageService.store(image_name);
                 product.setImage(image_name.getOriginalFilename());
 
-                System.out.println("__________________" + product.getCategory() + "______________________");
-
-
                 Integer newIdProduct = productService.create(product);
 
                 // Thêm gallery

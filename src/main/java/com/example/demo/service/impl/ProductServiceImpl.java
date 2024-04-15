@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Transactional
 @Service
@@ -97,6 +98,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Object[]> findAllSizeOfProduct() {
         return productRepository.findAllSizeOfProduct();
+    }
+
+    @Override
+    public Set<ProductEntity> findProductByCategory(CategoryEntity category) {
+        return productRepository.findProductByCategory(category);
     }
 
     private void mappingDtoWithEntity(){

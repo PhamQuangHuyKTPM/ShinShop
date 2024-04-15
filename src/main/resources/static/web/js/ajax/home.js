@@ -15,12 +15,12 @@ $(document).ready(function() {
                     var cartItemHtml = `
                     <div class="cart-drawer-item d-flex position-relative">
                         <div class="position-relative">
-                            <img loading="lazy" class="cart-drawer-item__img" src="/api/files/${item.product.image}" width="120" height="120">
+                            <img loading="lazy" class="cart-drawer-item__img" src="/api/files/${item.product.image}" max-width="120" height="120">
                         </div>
                         <div class="cart-drawer-item__info flex-grow-1">
-                            <h6 class="cart-drawer-item__title fw-normal">${item.product.name}</h6>
+                            <h6 class="cart-drawer-item__title fw-normal" style="max-width : 200px">${item.product.name}</h6>
 
-                            <p class="cart-drawer-item__option text-secondary">Size: ${item.size}</p>
+                            <p class="cart-drawer-item__option text-secondary"> Size : ${item.size}</p>
                             <div class="d-flex align-items-center justify-content-between mt-1">
                                 <div class="qty-control position-relative qty-initialized">
                                     <input type="number" name="quantity" value="${item.quantity}" min="1" class="qty-control__number border-0 text-center">
@@ -52,6 +52,22 @@ $(document).ready(function() {
             console.error("Lỗi khi lấy danh sách sản phẩm:", error);
         }
     });
-
+     $("#user-detail").click(function(){
+            $.ajax({
+                url: '/api/users/user-details',
+                type: 'GET', // hoặc 'POST' tùy thuộc vào loại yêu cầu bạn muốn gửi
+                success: function(response) {
+                    if(response == "null"){
+                        window.location.href = "/home/login";
+                    }else{
+                        window.location.href = "/home/user-details";
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi nếu có
+                    console.error(xhr.responseText);
+                }
+            });
+     });
 
 });

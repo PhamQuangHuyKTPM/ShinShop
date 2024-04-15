@@ -6,6 +6,7 @@ import com.example.demo.model.CategoryEntity;
 import com.example.demo.model.ProductEntity;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ProductService {
     List<ProductEntity> findAll();
@@ -28,4 +29,7 @@ public interface ProductService {
     Integer findGalleryWidthProductId(Integer id);
 
     List<Object[]> findAllSizeOfProduct();
+
+    Set<ProductEntity> findProductByCategory(CategoryEntity category);
+
 }

@@ -36,4 +36,9 @@ public class SizeServiceImpl implements SizeService {
     public void deleteSizeFromProductId(Integer productId) {
         sizeRepository.deleteSizeFromProductId(productId);
     }
+
+    @Override
+    public List<SizeEntity> findAllByOrderBySizeNameDesc() {
+        return sizeRepository.findAllByOrderBySizeNameDesc();
+    }
 }

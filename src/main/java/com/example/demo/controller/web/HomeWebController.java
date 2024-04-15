@@ -1,11 +1,7 @@
 package com.example.demo.controller.web;
 
-import com.example.demo.model.CartEntity;
-import com.example.demo.model.ProductEntity;
-import com.example.demo.model.UserEntity;
-import com.example.demo.service.ProductService;
-import com.example.demo.service.StorageService;
-import com.example.demo.service.UserService;
+import com.example.demo.model.*;
+import com.example.demo.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -21,6 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -32,6 +29,12 @@ public class HomeWebController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private CartItemService cartItemService;
 
     @GetMapping("")
     public String index(Model model, Principal principal, HttpSession session) {
@@ -62,5 +65,49 @@ public class HomeWebController {
         return "web/login";
     }
 
+    @GetMapping("/checkout")
+    public String checkoutPage(Principal principal, Model model){
+        if (principal == null){
+            return "redirect:/home/login";
+        }
+        UserEntity user = userService.findByUserName(principal.getName());
+        CartEntity cart = user.getCart();
+        model.addAttribute("user", user);
+        model.addAttribute("cart", cart);
+        return "web/pages/shop-checkout";
+    }
 
+    @GetMapping("/user-details")
+    public String userDetail(Principal principal, Model model){
+        if(principal == null) return "redirect:/home/login";
+
+        UserEntity user = userService.findByUserName(principal.getName());
+        model.addAttribute("user", user);
+        return "web/pages/user-details";
+    }
+
+    @GetMapping("/order-history")
+    public String orderHistory(Principal principal, Model model){
+        if(principal == null) return "redirect:/home/login";
+        List<OrderEntity> orders = orderService.findAll();
+        model.addAttribute("order", orders);
+        return "web/pages/order-history";
+    }
+
+    @GetMapping("/checkoutOrder")
+    public String checkout(Principal principal,@RequestParam("username") String username ,
+                           @RequestParam("nodeCheckout") String noteCheckout,
+                            Model model){
+        if(principal == null) return "redirect:/home/login";
+
+        System.out.println(username);
+        UserEntity user = userService.findByUserName(username);
+        CartEntity cart = user.getCart();
+        Long orderNewId =  orderService.addOrder(cart, noteCheckout);
+        cartItemService.deleteAllByCartId(cart.getId());
+
+        OrderEntity order = orderService.findById(orderNewId);
+        model.addAttribute("order", order);
+        return "web/pages/order-detail";
+    }
 }

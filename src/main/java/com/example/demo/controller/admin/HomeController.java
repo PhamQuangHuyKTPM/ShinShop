@@ -19,12 +19,8 @@ public class HomeController {
 
     @GetMapping
     public String index(){
-        return "redirect:/admin/";
+        return "redirect:/admin/product";
     }
 
-    @RequestMapping("/")
-    public String admin() {
-        return "admin/index";
-    }
 
 }

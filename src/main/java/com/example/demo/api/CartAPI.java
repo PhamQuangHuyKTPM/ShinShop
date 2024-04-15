@@ -1,10 +1,7 @@
 package com.example.demo.api;
 
 import com.example.demo.dto.ProductDTO;
-import com.example.demo.model.CartEntity;
-import com.example.demo.model.CartItemEntity;
-import com.example.demo.model.ProductEntity;
-import com.example.demo.model.UserEntity;
+import com.example.demo.model.*;
 import com.example.demo.service.CartItemService;
 import com.example.demo.service.CartService;
 import com.example.demo.service.ProductService;
@@ -50,23 +47,21 @@ public class CartAPI {
         return ResponseEntity.ok(shoppingCart.getCartItems());
     }
 
-    @PostMapping("/find")
-    public ResponseEntity<?> findCartById(@RequestBody Integer id){
-        UserEntity user = userService.findById(id);
-
-        return ResponseEntity.ok(user);
-    }
 
     @PostMapping("/add-item-to-cart")
-    public ResponseEntity<?> addItemToCart(@RequestBody String id, Principal principal){
-        int quantity = 1;
+    public ResponseEntity<?> addItemToCart(@RequestBody Integer productId, Principal principal){
+
         if (principal == null) {
             return ResponseEntity.ok("null");
         }
-        ProductEntity product = productService.findById(Integer.parseInt(id));
+
+        int quantity = 1;
+        String size = null;
+
+        ProductEntity product = productService.findById(productId);
         String username = principal.getName();
         UserEntity user = userService.findByUserName(username);
-        CartEntity cart = cartService.addItemToCart(product, quantity, user);
+        CartEntity cart = cartService.addItemToCart(product, quantity, user, size);
 
         CartItemEntity carItem = cartItemService.findFirstByCartOrderByIdDesc(cart);
         return ResponseEntity.ok(carItem);
@@ -86,6 +81,21 @@ public class CartAPI {
             return ResponseEntity.ok(cart);
         }
     }
+
+    @PostMapping("/cartItem/find/{id}")
+    public ResponseEntity<?> findItemCart(@PathVariable("id") Integer id){
+            CartItemEntity cartItem = cartItemService.findById(id);
+
+            return ResponseEntity.ok(cartItem);
+    }
+
+    @PostMapping("/find/{id}")
+    public ResponseEntity<?> findCart(@PathVariable("id") Integer id){
+        CartEntity cart = cartService.findById(id);
+
+        return ResponseEntity.ok(cart);
+    }
+
 
     @PostMapping("/update")
     public ResponseEntity<?> updateItemInCart(@RequestParam("quantity") int quantity, @RequestParam("id") Integer productId

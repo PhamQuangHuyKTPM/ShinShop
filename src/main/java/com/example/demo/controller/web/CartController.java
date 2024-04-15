@@ -2,6 +2,7 @@ package com.example.demo.controller.web;
 
 import com.example.demo.model.CartEntity;
 import com.example.demo.model.ProductEntity;
+import com.example.demo.model.SizeEntity;
 import com.example.demo.model.UserEntity;
 import com.example.demo.service.CartService;
 import com.example.demo.service.ProductService;
@@ -44,8 +45,8 @@ public class CartController {
     }
 
     @GetMapping("/add-items-to-cart/{id}")
-    public String addItemToCart(@PathVariable("id") Integer id, HttpServletRequest request,
-            Principal principal){
+    public String addItemToCart(@PathVariable("id") Integer id, @PathVariable("size") String size, HttpServletRequest request,
+                                Principal principal){
         int quantity = 1;
 
         if(principal == null){
@@ -56,7 +57,7 @@ public class CartController {
         String username = principal.getName();
         UserEntity user = userService.findByUserName(username);
 
-        CartEntity cart = cartService.addItemToCart(product, quantity, user);
+        CartEntity cart = cartService.addItemToCart(product, quantity, user, size);
 
         return "redirect:" + request.getHeader("Referer");
     }

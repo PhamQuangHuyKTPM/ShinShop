@@ -24,4 +24,6 @@ public interface SizeRepository extends JpaRepository<SizeEntity, Integer> {
     @Modifying
     @Query(value = "DELETE FROM product_size  WHERE product_id= :productId", nativeQuery = true)
     void deleteSizeFromProductId(Integer productId);
+
+    List<SizeEntity> findAllByOrderBySizeNameDesc();
 }

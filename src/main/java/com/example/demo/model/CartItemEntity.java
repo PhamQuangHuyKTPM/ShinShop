@@ -2,6 +2,9 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "cart-item")
 public class CartItemEntity {
@@ -18,6 +21,8 @@ public class CartItemEntity {
     @OneToOne
     @JoinColumn(name = "product_id")
     private ProductEntity product;
+
+    private String size;
 
     public CartItemEntity() {
     }
@@ -60,5 +65,13 @@ public class CartItemEntity {
 
     public void setProduct(ProductEntity product) {
         this.product = product;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 }

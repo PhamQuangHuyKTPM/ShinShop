@@ -20,4 +20,14 @@ public class CartItemServiceImpl implements CartItemService {
         Optional<CartItemEntity> optionalCartItem = cartItemRepository.findFirstByCartOrderByIdDesc(cart);
         return optionalCartItem.orElse(null);
     }
+
+    @Override
+    public CartItemEntity findById(Integer id) {
+        return cartItemRepository.findById(id);
+    }
+
+    @Override
+    public void deleteAllByCartId(Long carId) {
+        cartItemRepository.deleteAllByCartId(carId);
+    }
 }
