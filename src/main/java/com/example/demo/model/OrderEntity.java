@@ -37,7 +37,6 @@ public class OrderEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user_order;
 
-
     private String ghiChu;
     private double totalPrices;
 

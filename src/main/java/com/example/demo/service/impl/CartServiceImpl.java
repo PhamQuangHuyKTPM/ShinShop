@@ -131,6 +131,11 @@ public class CartServiceImpl implements CartService {
         return cartRepository.findById(id);
     }
 
+    @Override
+    public void save(CartEntity cart) {
+        cartRepository.save(cart);
+    }
+
     private CartItemEntity findCartItem(Set<CartItemEntity> cartItems, Integer productId){
         if(cartItems == null){
             return null;

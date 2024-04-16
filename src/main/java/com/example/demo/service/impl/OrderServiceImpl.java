@@ -1,9 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.CartEntity;
-import com.example.demo.model.CartItemEntity;
-import com.example.demo.model.OrderDetailsEntity;
-import com.example.demo.model.OrderEntity;
+import com.example.demo.model.*;
 import com.example.demo.repository.CartItemRepository;
 import com.example.demo.repository.CartRepository;
 import com.example.demo.repository.OrderDetailRepository;
@@ -79,5 +76,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderEntity> findAll() {
         return orderRepository.findAll();
+    }
+
+    @Override
+    public List<OrderEntity> findAllByUser_order(Integer id) {
+        return orderRepository.findAllByUser_order(id);
+    }
+
+    @Override
+    public void updateStatusById(Long id, String statusNew) {
+        orderRepository.updateStatusById(id, statusNew);
     }
 }

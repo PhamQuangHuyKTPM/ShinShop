@@ -13,4 +13,9 @@ public class DefaultController {
         return "redirect:/home";
     }
 
+    @GetMapping("/remove-session")
+    public String removeSession(){
+        return "redirect:/home";
+    }
+
 }

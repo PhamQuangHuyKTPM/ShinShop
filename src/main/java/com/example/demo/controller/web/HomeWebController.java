@@ -31,6 +31,9 @@ public class HomeWebController {
     private UserService userService;
 
     @Autowired
+    private CartService cartService;
+
+    @Autowired
     private OrderService orderService;
 
     @Autowired
@@ -41,10 +44,20 @@ public class HomeWebController {
         if(principal != null){
             session.setAttribute("username", principal.getName());
             UserEntity user = userService.findByUserName(principal.getName());
-            CartEntity cart = user.getCart();
-            session.setAttribute("totalItems", cart.getTotalItems());
+            if(user != null) {
+                CartEntity cart = user.getCart();
+                if(cart == null){
+                    cart = new CartEntity();
+                    cart.setUser(user);
+                    cart.setTotalPrices(0);
+                    cart.setTotalItems(0);
+                    cartService.save(cart);
+                }
+                session.setAttribute("totalItems", cart.getTotalItems());
+            }
         }else{
             session.removeAttribute("username");
+            session.removeAttribute("totalItems");
         }
         model.addAttribute("productList", productService.findAll());
         return "web/index";
@@ -89,7 +102,8 @@ public class HomeWebController {
     @GetMapping("/order-history")
     public String orderHistory(Principal principal, Model model){
         if(principal == null) return "redirect:/home/login";
-        List<OrderEntity> orders = orderService.findAll();
+        UserEntity user = userService.findByUserName(principal.getName());
+        List<OrderEntity> orders = orderService.findAllByUser_order(user.getId().intValue());
         model.addAttribute("order", orders);
         return "web/pages/order-history";
     }

@@ -16,4 +16,6 @@ public interface CartService {
     CartEntity deleteItemInCart(ProductEntity product, UserEntity user);
 
     CartEntity findById(Integer id);
+
+    void save(CartEntity cart);
 }
