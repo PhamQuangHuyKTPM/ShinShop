@@ -1,6 +1,8 @@
 package com.example.demo.controller.web;
 
+import com.example.demo.model.CommentEntity;
 import com.example.demo.model.ProductEntity;
+import com.example.demo.service.CommentService;
 import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,15 +22,20 @@ public class ProductDetailsController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CommentService commentService;
+
     @GetMapping("/{id}")
     public String page(@PathVariable("id") Integer id, Model model){
 
         ProductEntity product = productService.findById(id);
         if(product != null){
             Set<ProductEntity> relatedProducts = productService.findProductByCategory(product.getCategory());
+            List<CommentEntity> comments = commentService.findByProduct(product);
 
             model.addAttribute("product", product);
             model.addAttribute("relatedProducts", relatedProducts);
+            model.addAttribute("comments", comments);
         }
 
         return "web/pages/product-details";

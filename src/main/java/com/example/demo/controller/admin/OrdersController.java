@@ -1,13 +1,16 @@
 package com.example.demo.controller.admin;
 
 import com.example.demo.model.OrderEntity;
+import com.example.demo.model.RevenueEntity;
 import com.example.demo.service.OrderService;
+import com.example.demo.service.RevenueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +20,9 @@ public class OrdersController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private RevenueService revenueService;
 
     @GetMapping("")
     public String ordersPage(Principal principal, Model model){
@@ -30,6 +36,26 @@ public class OrdersController {
         OrderEntity order = orderService.findById(id);
         model.addAttribute("order", order);
         return "admin/orders/order-detail";
+    }
+
+    @GetMapping("/success/{id}")
+    public String saveRevenue(@PathVariable("id") Integer id){
+
+        OrderEntity order = orderService.findById(id);
+        RevenueEntity revenue = revenueService.findByDate(LocalDate.now());
+        if(revenue != null){
+            revenue.setRevenue(revenue.getRevenue() + order.getTotalPrices());
+            revenue.setTotalOrder(revenue.getTotalOrder() + 1);
+        }else{
+            revenue = new RevenueEntity();
+            revenue.setRevenue(order.getTotalPrices());
+            revenue.setDate(LocalDate.now());
+            revenue.setTotalOrder(1);
+        }
+        revenueService.save(revenue);
+        orderService.updateStatusById(id.longValue(), "Hoàn thành");
+
+        return "redirect:/admin/orders";
     }
 
 

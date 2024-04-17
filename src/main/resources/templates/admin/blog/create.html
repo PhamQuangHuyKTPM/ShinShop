@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Tạo bài viết</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link th:href="@{/manager/css/bootstrap.min.css}" rel="stylesheet">
+
+
+    <!-- MetisMenu CSS -->
+    <link th:href="@{/manager/css/metisMenu.min.css}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link th:href="@{/manager/css/startmin.css}" rel="stylesheet">
+
+    <link th:href="@{/admin/form/richeditor/richtext.min.css}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link th:href="@{/manager/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav th:replace="admin/fragments/navbar :: navbar"></nav>
+
+        <aside th:replace="~{admin/fragments/sidebar :: sidebar}"></aside>
+        <!-- /.sidebar -->
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">Tạo bài viết mơi</h1>
+                    </div>
+                </div>
+
+                <!-- /.row -->
+                <div class="row">
+                    <!-- /.col-lg-6 -->
+                    <div class="col-lg-12">
+                        <div class="panel tabbed-panel panel-info">
+                            <div class="panel-heading clearfix">
+                                <div class="panel-title pull-right"><button type="submit" class="btn btn-primary mt-3"
+                                        onclick="submitForm()" id="submitForm">Thêm mới</button></div>
+                                <div class="pull-left">
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a href="#tab-primary-1" data-toggle="tab">Thông tin
+                                                chung</a></li>
+                                        <li><a href="#tab-primary-2" data-toggle="tab">Nội dung chính</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <form role="form" id="formSave" th:object="${blog}" method="POST" th:action="@{/admin/blog/create}" class="tab-content"
+                                    enctype="multipart/form-data">
+                                    <div class="tab-pane fade in active" id="tab-primary-1">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="panel panel-default">
+
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-8">
+                                                                <div class="form-group">
+                                                                    
+                                                                    <div class="mb-3 mt-3">
+                                                                        <label>Ảnh đại diện</label>
+                                                                        <div class="image-preview" id="imagePreview">
+                                                                            <img th:src="@{/upload/shopping-cart.jpg}"
+                                                                                alt="Preview" width="250" height="250">
+                                                                            <div class="upload-icon" id="uploadIcon">
+                                                                            </div>
+                                                                        </div>
+                                                                        <input type="file" class="form-control visually-hidden"
+                                                                        name="image_name" id="imageInput">
+                                                                    </div>
+
+                                                                    <label class="mb-3 mt-3" style="margin-top : 20px">
+                                                                        Tiêu đề bài viết
+                                                                    </label>
+                                                                    <input class="form-control"
+                                                                           placeholder="Tiêu đề..." th:field="*{title}">
+
+                                                                    <span id="titleError" class="error"></span>
+
+                                                                    <label class="mb-3 mt-3" style="margin-top : 20px">Mô tả ngắn</label>
+                                                                    <input class="form-control"
+                                                                        placeholder="Mô tả ngắn..." th:field="*{shotDescription}">
+                                                                    <span id="nameError" class="error"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <!-- /.panel-body -->
+                                                </div>
+                                                <!-- /.panel -->
+                                            </div>
+                                            <!-- /.col-lg-12 -->
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="tab-primary-2">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <textarea name="content" id="content"
+                                                    placeholder="Nội dung"  rows="5" th:field="*{content}"
+                                                    required></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+                    <!-- /.col-lg-6 -->
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script th:src="@{/manager/js/jquery.min.js}"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script th:src="@{/manager/js/bootstrap.min.js}"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script th:src="@{/manager/js/metisMenu.min.js}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script th:src="@{/manager/js/startmin.js}"></script>
+
+    <script th:src="@{/admin/form/richeditor/jquery.richtext.min.js}"></script>
+
+    <script>
+        $(document).ready(function() {
+
+        	$('#content').richText();
+
+        	$('#submitForm').click(function() {
+                $('#formSave').submit();
+            });
+
+            $('#imageInput').change(function() {
+                var file = this.files[0];
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#imagePreview img').attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -39,6 +39,9 @@ public class HomeWebController {
     @Autowired
     private CartItemService cartItemService;
 
+    @Autowired
+    private BlogService blogService;
+
     @GetMapping("")
     public String index(Model model, Principal principal, HttpSession session) {
         if(principal != null){
@@ -60,6 +63,7 @@ public class HomeWebController {
             session.removeAttribute("totalItems");
         }
         model.addAttribute("productList", productService.findAll());
+        model.addAttribute("blogList", blogService.getAllBlog());
         return "web/index";
     }
 
