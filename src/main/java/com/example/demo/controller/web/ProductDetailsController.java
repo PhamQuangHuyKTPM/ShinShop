@@ -35,7 +35,15 @@ public class ProductDetailsController {
 
             model.addAttribute("product", product);
             model.addAttribute("relatedProducts", relatedProducts);
-            model.addAttribute("comments", comments);
+
+
+            if(!comments.isEmpty()){
+                model.addAttribute("comments", comments);
+                for(CommentEntity comment : comments){
+                    System.out.println(comment.getContent());
+
+                }
+            }
         }
 
         return "web/pages/product-details";
