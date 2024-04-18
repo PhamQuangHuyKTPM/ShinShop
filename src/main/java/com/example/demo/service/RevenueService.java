@@ -14,4 +14,8 @@ public interface RevenueService {
 
     void save(RevenueEntity revenue);
 
+    List<RevenueEntity> getAll();
+
+    List<Object[]> getRevenueFromDateToDate(LocalDate startDate,LocalDate endDate);
+
 }

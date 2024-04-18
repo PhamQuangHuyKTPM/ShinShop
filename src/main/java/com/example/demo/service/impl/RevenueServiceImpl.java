@@ -34,4 +34,14 @@ public class RevenueServiceImpl implements RevenueService {
     public void save(RevenueEntity revenue) {
         revenueRepository.save(revenue);
     }
+
+    @Override
+    public List<RevenueEntity> getAll() {
+        return revenueRepository.findAll();
+    }
+
+    @Override
+    public List<Object[]> getRevenueFromDateToDate(LocalDate startDate, LocalDate endDate) {
+        return revenueRepository.getRevenueFromDateToDate(startDate, endDate);
+    }
 }

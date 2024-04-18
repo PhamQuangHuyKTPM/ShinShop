@@ -3,6 +3,7 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "revenue")
@@ -36,9 +37,16 @@ public class RevenueEntity {
         return date;
     }
 
+    public String getFormattedOrderDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return date.format(formatter);
+    }
+
+
     public void setDate(LocalDate date) {
         this.date = date;
     }
+
 
     public Integer getTotalOrder() {
         return totalOrder;
