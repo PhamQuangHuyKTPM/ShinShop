@@ -13,6 +13,7 @@ public class  UserRole {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 
+
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private RoleEntity role;

@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 
+import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -73,5 +74,14 @@ public class CartItemEntity {
 
     public void setSize(String size) {
         this.size = size;
+    }
+
+    public String getTotalPriceVND() {
+        // Định dạng số với dấu phân cách hàng nghìn và không có chữ số sau dấu thập phân
+        DecimalFormat df = new DecimalFormat("#,##0");
+        String formattedPrice = df.format(this.totalPrice);
+        formattedPrice += " VNĐ";
+
+        return formattedPrice;
     }
 }

@@ -15,7 +15,7 @@ $(document).ready(function () {
                 width: null
             },
             title: {
-                text: 'Doanh số các ngày trong tuần'
+                text: 'Thống kê doanh thu'
             },
             xAxis: {
                 categories: date,

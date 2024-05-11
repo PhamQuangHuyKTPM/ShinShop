@@ -74,4 +74,11 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return false;
     }
+
+    @Override
+    public List<CategoryEntity> findAllById(List<Integer> categoryId) {
+        return categoryRepository.findAllById(categoryId);
+    }
+
+
 }

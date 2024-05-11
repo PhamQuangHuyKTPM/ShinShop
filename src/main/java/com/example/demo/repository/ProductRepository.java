@@ -2,10 +2,13 @@ package com.example.demo.repository;
 
 import com.example.demo.model.CategoryEntity;
 import com.example.demo.model.ProductEntity;
+import com.example.demo.model.SizeEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-public interface ProductRepository extends JpaRepository<ProductEntity, Integer> {
+public interface ProductRepository extends JpaRepository<ProductEntity, Integer>, JpaSpecificationExecutor<ProductEntity> {
 
     @Transactional
     @Modifying
@@ -57,4 +60,19 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
 
     Set<ProductEntity> findProductByCategory(CategoryEntity category);
 
+   @Query("SELECT p FROM ProductEntity p " +
+            "JOIN FETCH p.category c " +
+            "JOIN FETCH p.size s " +
+            "WHERE (:categories IS NULL OR c.categoryName IN :categories) " +
+            "AND (:sizes IS NULL OR s.sizeName IN :sizes) " +
+            "AND (:minPrice IS NULL OR p.price >= :minPrice) " +
+            "AND (:maxPrice IS NULL OR p.price <= :maxPrice)")
+
+   List<ProductEntity> filterProducts(@Param("categories") List<String> categories,
+                                       @Param("sizes") List<String> sizes,
+                                       @Param("minPrice") Double minPrice,
+                                       @Param("maxPrice") Double maxPrice);
+
+   @Query("SELECT p FROM ProductEntity p WHERE p.name LIKE %:keyword%")
+   List<ProductEntity> searchProduct(String keyword);
 }

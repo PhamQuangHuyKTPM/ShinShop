@@ -17,7 +17,9 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -42,6 +44,25 @@ public class HomeWebController {
     @Autowired
     private BlogService blogService;
 
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private SizeService sizeService;
+
+    @PostMapping("/search-product")
+    public String searchProduct(@RequestParam("search-keyword") String keyword, Model model){
+        List<ProductEntity> products = productService.searchProduct(keyword);
+        List<CategoryEntity> categories = categoryService.findAll();
+        List<SizeEntity> sizes = sizeService.findAll();
+
+        model.addAttribute("products", products);
+        model.addAttribute("categories", categories);
+        model.addAttribute("sizes", sizes);
+        return "web/pages/the-shop";
+    }
+
+
     @GetMapping("")
     public String index(Model model, Principal principal, HttpSession session) {
         if(principal != null){
@@ -65,6 +86,18 @@ public class HomeWebController {
         model.addAttribute("productList", productService.findAll());
         model.addAttribute("blogList", blogService.getAllBlog());
         return "web/index";
+    }
+
+    @GetMapping("/the-shop")
+    public String theShop(Model model){
+        List<ProductEntity> products = productService.findAll();
+        List<CategoryEntity> categories = categoryService.findAll();
+        List<SizeEntity> sizes = sizeService.findAll();
+
+        model.addAttribute("products", products);
+        model.addAttribute("categories", categories);
+        model.addAttribute("sizes", sizes);
+        return "web/pages/the-shop";
     }
 
     @GetMapping("/login")

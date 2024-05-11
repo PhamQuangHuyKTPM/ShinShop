@@ -4,6 +4,9 @@ import com.example.demo.dto.CategoryDTO;
 import com.example.demo.dto.ProductDTO;
 import com.example.demo.model.CategoryEntity;
 import com.example.demo.model.ProductEntity;
+import com.example.demo.model.SizeEntity;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Set;
@@ -15,6 +18,8 @@ public interface ProductService {
     ProductEntity findById(Integer id);
     void update (ProductEntity product);
     Boolean delete(Integer id);
+
+    List<ProductEntity> filterProducts(List<String> categories, List<String> sizes, Double minPrice, Double maxPrice);
 
     void saveProductImage(Integer productId, Integer imageId);
 
@@ -31,5 +36,9 @@ public interface ProductService {
     List<Object[]> findAllSizeOfProduct();
 
     Set<ProductEntity> findProductByCategory(CategoryEntity category);
+
+    List<ProductEntity> filterProduct(Specification<ProductEntity> products);
+
+    List<ProductEntity> searchProduct(String keyword);
 
 }

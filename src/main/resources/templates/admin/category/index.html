@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Category</title>
+    <title>Danh mục sản phẩm</title>
 
     <!-- Bootstrap Core CSS -->
     <link th:href="@{manager/css/bootstrap.min.css}" rel="stylesheet">
@@ -58,7 +58,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <a href="/admin/add-category" type="button" class="btn btn-success">Thêm mới danh mục</a>
+                            <a href="/admin/add-category" type="button" class="btn btn-success"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Thêm mới danh mục</a>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -68,8 +68,8 @@
 
                                     <thead>
                                     <tr>
-                                        <th>Category name</th>
-                                        <th>Status</th>
+                                        <th>Tên danh mục</th>
+                                        <th>Trạng thái</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
@@ -79,10 +79,10 @@
                                         <td th:text="${category.categoryName}"></td>
                                         <td th:text="${category.categoryStatus ? 'Hiện' : 'Ẩn'}"></td>
                                         <td>
-                                            <a th:href="@{/admin/edit-category/{id}(id=${category.getId()})}" type="button" class="btn btn-warning btn-sm">Edit</a>
+                                            <a th:href="@{/admin/edit-category/{id}(id=${category.getId()})}" type="button" class="btn btn-warning btn-sm"> <i class="fa fa-pencil" aria-hidden="true"></i> Chỉnh sửa</a>
                                             <!--<a th:href="@{/admin/delete-category/{id}(id=${category.getId()})}" type="button" class="btn btn-danger btn-sm" >Delete</a>-->
                                             <a type="button" href="#" class="btn btn-danger btn-sm" data-toggle="modal" th:data-target="'#ModalCate-' + ${category.getId()}">
-                                                Delete
+                                                <i class="fa fa-trash" aria-hidden="true"></i> Delete
                                             </a>
                                             <div class="modal fade" th:id="'ModalCate-' + ${category.getId()}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; width:auto" >
                                                 <div class="modal-dialog" role="document">
@@ -94,7 +94,7 @@
 
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Đóng</button>
-                                                            <a th:href="@{/admin/delete-category/{id}(id=${category.getId()})}" type="button" class="btn btn-danger btn-sm" >Delete</a>
+                                                            <a th:href="@{/admin/delete-category/{id}(id=${category.getId()})}" type="button" class="btn btn-danger btn-sm" > <i class="fa fa-trash" aria-hidden="true"></i>Xóa</a>
                                                         </div>
                                                     </div>
                                                     <!-- /.modal-content -->

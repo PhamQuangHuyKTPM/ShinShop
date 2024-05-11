@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Entity
 @Table(name = "revenue")
@@ -18,6 +19,10 @@ public class RevenueEntity {
 
     public RevenueEntity() {
     }
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private List<OrderEntity> orders;
 
     public RevenueEntity(Long id, LocalDate date, double revenue) {
         this.id = id;

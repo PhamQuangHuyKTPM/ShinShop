@@ -11,4 +11,6 @@ public interface CategoryService {
     CategoryEntity findById(Integer id);
     Boolean update (CategoryDTO category);
     Boolean delete(Integer id);
+
+    List<CategoryEntity> findAllById(List<Integer> categoryId);
 }

@@ -49,4 +49,6 @@ public class ProductDetailsController {
         return "web/pages/product-details";
     }
 
+
+
 }

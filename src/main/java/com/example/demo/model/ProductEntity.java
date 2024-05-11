@@ -3,6 +3,7 @@ package com.example.demo.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
@@ -196,6 +197,15 @@ public class ProductEntity {
 
     public void setCartItem(CartItemEntity cartItem) {
         this.cartItem = cartItem;
+    }
+
+    public String getTotalPriceVND() {
+        // Định dạng số với dấu phân cách hàng nghìn và không có chữ số sau dấu thập phân
+        DecimalFormat df = new DecimalFormat("#,##0");
+        String formattedPrice = df.format(this.price);
+        formattedPrice += " VNĐ";
+
+        return formattedPrice;
     }
 }
 

@@ -24,7 +24,7 @@
     <![endif]-->
 
     <!-- Document Title -->
-    <title>Checkout </title>
+    <title>Đặt hàng & thanh toán</title>
 
 </head>
 
@@ -51,7 +51,7 @@
         <a href="shop_checkout.html" class="checkout-steps__item active">
           <span class="checkout-steps__item-number">02</span>
           <span class="checkout-steps__item-title">
-            <span>Thanh toán</span>
+            <span>Đặt hàng & thanh toán</span>
           </span>
         </a>
         <a href="shop_order_complete.html" class="checkout-steps__item">
@@ -122,7 +122,7 @@
                       <td th:text="${cartItem.product.name} + ' x' + ${cartItem.quantity}">
 
                       </td>
-                      <td th:text="${cartItem.product.price}">
+                      <td th:text="${cartItem.product.getTotalPriceVND()}">
 
                       </td>
                     </tr>
@@ -132,7 +132,7 @@
                   <tbody>
                     <tr>
                       <th>Tạm tính</th>
-                      <td th:text="${cart.totalPrices}"></td>
+                      <td th:text="${cart.getTotalPriceVND()}"></td>
                     </tr>
                     <tr>
                       <th>SHIPPING</th>
@@ -140,7 +140,7 @@
                     </tr>
                     <tr>
                       <th>Tổng tiền</th>
-                      <td>[[${cart.totalPrices} + 35000]]</td>
+                      <td>[[${cart.totalPrices} + 35000]] VNĐ</td>
                     </tr>
                   </tbody>
                 </table>
@@ -159,7 +159,7 @@
                       </label>
                   </div>
               </div>
-              <button class="btn btn-primary btn-checkout" type="submit">PLACE ORDER</button>
+              <button class="btn btn-primary btn-checkout" type="submit">Đặt hàng</button>
             </div>
           </div>
         </div>

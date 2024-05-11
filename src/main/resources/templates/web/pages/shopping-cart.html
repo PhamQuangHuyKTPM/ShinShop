@@ -32,27 +32,24 @@
 <main>
     <div class="mb-4 pb-4"></div>
     <section class="shop-checkout container">
-        <h2 class="page-title">Cart</h2>
+        <h2 class="page-title">Giỏ hàng</h2>
         <div class="checkout-steps">
             <a href="shop_cart.html" class="checkout-steps__item active">
                 <span class="checkout-steps__item-number">01</span>
                 <span class="checkout-steps__item-title">
-            <span>Shopping Bag</span>
-            <em>Manage Your Items List</em>
+            <span>Giỏ hàng</span>
           </span>
             </a>
             <a href="shop_checkout.html" class="checkout-steps__item">
                 <span class="checkout-steps__item-number">02</span>
                 <span class="checkout-steps__item-title">
-            <span>Shipping and Checkout</span>
-            <em>Checkout Your Items List</em>
+            <span>Đặt hàng & thanh toán</span>
           </span>
             </a>
             <a href="shop_order_complete.html" class="checkout-steps__item">
                 <span class="checkout-steps__item-number">03</span>
                 <span class="checkout-steps__item-title">
-            <span>Confirmation</span>
-            <em>Review And Submit Your Order</em>
+            <span>Đặt hàng thành công</span>
           </span>
             </a>
         </div>
@@ -65,11 +62,11 @@
                 <table class="cart-table">
                     <thead>
                     <tr>
-                        <th>Product</th>
+                        <th>Sản phẩm</th>
                         <th></th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Subtotal</th>
+                        <th>Đơn giá</th>
+                        <th>Số lượng</th>
+                        <th>Tổng</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -90,7 +87,7 @@
                             </div>
                         </td>
                         <td>
-                            <span class="shopping-cart__product-price" th:text="${cartItem.product.price}"></span>
+                            <span class="shopping-cart__product-price" th:text="${cartItem.product.getTotalPriceVND()}"></span>
                         </td>
                         <td>
                             <div class="qty-control position-relative">
@@ -100,7 +97,7 @@
                             </div><!-- .qty-control -->
                         </td>
                         <td>
-                            <span class="shopping-cart__subtotal" th:text="${cartItem.totalPrice}"></span>
+                            <span class="shopping-cart__subtotal" th:text="${cartItem.getTotalPriceVND()}"></span>
                         </td>
                         <td>
                             <a href="#" class="remove-cart">
@@ -115,21 +112,21 @@
                 </table>
                 <div class="cart-table-footer">
                     <form action="https://uomo-html.flexkitux.com/Demo10/" class="position-relative bg-body">
-                        <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code">
-                        <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit" value="APPLY COUPON">
+                        <input class="form-control" type="text" name="coupon_code" placeholder="Nhập mã...">
+                        <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit" value="Mã giảm giá">
                     </form>
-                    <button class="btn btn-light">UPDATE CART</button>
+                    <button class="btn btn-light">CẬP NHẬT GIỎ HÀNG</button>
                 </div>
             </div>
             <div class="shopping-cart__totals-wrapper">
                 <div class="sticky-content">
                     <div class="shopping-cart__totals">
-                        <h3>Cart Totals</h3>
+                        <h3>Tổng giỏ hàng</h3>
                         <table class="cart-totals">
                             <tbody>
                             <tr>
-                                <th>Subtotal</th>
-                                <td id="totalCartPrice" th:text="${shoppingCart.totalPrices}"></td>
+                                <th>Tổng tiền</th>
+                                <td id="totalCartPrice" th:text="${shoppingCart.getTotalPriceVND()}"></td>
                             </tr>
                             </tbody>
                         </table>
